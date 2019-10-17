@@ -3,7 +3,6 @@ def merge(left_list, right_list):
     left_list_index = 0
     right_list_index = 0
 
-    # We use the list lengths often, so its handy to make variables
     left_list_length, right_list_length = len(left_list), len(right_list)
 
     for _ in range(left_list_length + right_list_length):
