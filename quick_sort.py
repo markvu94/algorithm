@@ -1,56 +1,38 @@
-# def quick_sort(array=[]):
-#     """Sort the array by using quicksort."""
+def partition(array, start, end):
+    pivot = array[start]
+    low = start + 1
+    high = end
 
-#     less = []
-#     equal = []
-#     greater = []
-
-#     if len(array) <= 1:
-#         return array
-
-#     else:
-#         pivot = array[0]
-#         for x in array:
-#             if x < pivot:
-#                 less.append(x)
-#             elif x == pivot:
-#                 equal.append(x)
-#             elif x > pivot:
-#                 greater.append(x)
-        
-#         return quick_sort(less) + equal + quick_sort(greater)  
-   
-    
-
-def partition(nums, low, high):  
-    # We select the middle element to be the pivot.
-    pivot = nums[(low + high) // 2]
-    i = low - 1
-    j = high + 1
     while True:
-        i += 1
-        while nums[i] < pivot:
-            i += 1
+        # If the current value we're looking at is larger than the pivot
+        # it's in the right place (right side of pivot) and we can move left,
+        # to the next element.
+        # We also need to make sure we haven't surpassed the low pointer, since that
+        # indicates we have already moved all the elements to their correct side of the pivot
+        while low <= high and array[high] >= pivot:
+            high = high - 1
 
-        j -= 1
-        while nums[j] > pivot:
-            j -= 1
+        # Opposite process of the one above
+        while low <= high and array[low] <= pivot:
+            low = low + 1
 
-        if i >= j:
-            return j
+        # We either found a value for both high and low that is out of order
+        # or low is higher than high, in which case we exit the loop
+        if low <= high:
+            array[low], array[high] = array[high], array[low]
+            # The loop continues
+        else:
+            # We exit out of the loop
+            break
 
-        # If an element at i (on the left of the pivot) is larger than the
-        # element at j (on right right of the pivot), then swap them
-        nums[i], nums[j] = nums[j], nums[i]
+    array[start], array[high] = array[high], array[start]
 
+    return high
 
-def quick_sort(nums):  
-    # Create a helper function that will be called recursively
-    def _quick_sort(items, low, high):
-        if low < high:
-            # This is the index after the pivot, where our lists are split
-            split_index = partition(items, low, high)
-            _quick_sort(items, low, split_index)
-            _quick_sort(items, split_index + 1, high)
+def quick_sort(array, start, end):
+    if start >= end:
+        return
 
-    _quick_sort(nums, 0, len(nums) - 1)
+    p = partition(array, start, end)
+    quick_sort(array, start, p-1)
+    quick_sort(array, p+1, end)
